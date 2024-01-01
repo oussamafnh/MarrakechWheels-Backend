@@ -1,5 +1,5 @@
 import express from "express";
-import {get , merge} from "lodash";
+import { get, merge } from "lodash";
 import { getUserBySessionToken } from "../db/users";
 
 
@@ -9,11 +9,11 @@ export const isOwner = async (req: express.Request, res: express.Response, next:
         const { id } = req.params;
         const currentUserId = get(req, "identity._id") as unknown as string;
 
-        if(!currentUserId){
+        if (!currentUserId) {
             return res.sendStatus(401);
         }
 
-        if(currentUserId.toString() !== id) {
+        if (currentUserId.toString() !== id) {
             return res.sendStatus(401);
         }
 
@@ -27,22 +27,22 @@ export const isOwner = async (req: express.Request, res: express.Response, next:
 
 
 
-export const isAuthenticated = async (req: express.Request, res: express.Response , next: express.NextFunction) => {
+export const isAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
     try {
         const sessionToken = req.cookies["APP-COOKIE"];
 
-        if(!sessionToken) {
-            return res.status(401).json({message: "Unauthorized"});;
+        if (!sessionToken) {
+            return res.status(401).json({ message: "Unauthorized" });;
         }
 
         const existingUser = await getUserBySessionToken(sessionToken);
 
-        if(!existingUser) {
-            return res.status(401).json({message: "Unauthorized"});;
+        if (!existingUser) {
+            return res.status(401).json({ message: "Unauthorized" });;
         }
 
 
-        merge(req, {identity: existingUser});
+        merge(req, { identity: existingUser });
         return next();
 
     } catch (err) {
@@ -50,3 +50,6 @@ export const isAuthenticated = async (req: express.Request, res: express.Respons
         return res.sendStatus(400);
     }
 }
+
+
+
