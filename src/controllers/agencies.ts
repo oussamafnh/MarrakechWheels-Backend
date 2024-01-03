@@ -18,8 +18,6 @@ export const createAgency = async (req: express.Request, res: express.Response) 
     }
 }
 
-
-
 export const getAllAgencies = async (req: express.Request, res: express.Response) => {
     try {
         const agencies = await getAgencies();
